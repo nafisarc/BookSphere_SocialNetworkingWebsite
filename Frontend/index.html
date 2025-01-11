@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Sphere</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="/M00982229/Images/logo.png" alt="BookSphere Logo">
+        <div class="search-form">
+            <form id="searchForm" onsubmit="searchUsers(event)">
+                <input id="searchInput" type="text" name="q" placeholder="Search...">
+                <button id="searchButton" type="submit">Search</button>
+            </form>
+        </div>        
+    </header>
+
+    <!-- Navbar -->
+    <nav>
+        <ul>
+            <li><a href="/M00982229/homepage"><img src="/M00982229/Images/homeIcon.png" alt="Home icon" class="nav-icon">Home</a></li>
+            <li><a href="/M00982229/feed"><img src="/M00982229/Images/feedIcon.png" alt="Home icon" class="nav-icon">Feed</a></li>
+            <li><a href="/M00982229/friends"><img src="/M00982229/Images/friendsIcon.png" alt="Friends icon" class="nav-icon">Friends</a></li>
+            <li><a href="/M00982229/register"><img src="/M00982229/Images/regIcon.png" alt="Registration icon" class="nav-icon">Register</a></li>
+            <li><a href="/M00982229/login"><img src="/M00982229/Images/loginIcon.png" alt="Login icon" class="nav-icon">Login</a></li>
+            <li><a href="/M00982229/profile"><img src="/M00982229/Images/profileIcon.png" alt="Profile icon" class="nav-icon">Profile</a></li>
+            <li><button class="create-post-btn" onclick="toggleCreatePostModal()">Create a Post</button></li>
+        </ul>
+    </nav>
+
+    <!-- Sections -->
+    <main>
+        <!-- Results Section -->
+        <div id="searchResults" class="section">
+            <button onclick="loadSectionFromURL()" class="close-btn">X</button>
+            <h2>Users</h2>
+            <div class="results-container"></div>
+        </div>
+
+        <!-- Home Section -->
+        <div id="homeSection" class="section" style="display: block;">
+            <div class="home-container">
+                <h1>Welcome to <span class="brand-name">BookSphere</span></h1>
+                <p class="home-message">
+                    A vibrant community where book lovers unite! Discover reviews, share your thoughts, and explore the best reads curated by a community that loves books as much as you do.
+                </p>
+                <p class="cta-message">
+                    Register now to join the community, or login if you already have an account.
+                </p>
+                <div class="home-buttons">
+                    <button onclick="navigateToPage('/M00982229/register')" class="home-btn">Register</button>
+                    <button onclick="navigateToPage('/M00982229/login')" class="home-btn">Login</button>
+                </div>
+                <div class="book-fact-box">
+                    <h3>Book Fact Of The Hour</h3>
+                    <p id="bookFactText">Loading...</p>
+                </div>
+            </div>
+        </div>        
+
+        <!-- Feed Section -->
+        <div id="feedSection" class="section" style="display: none;">
+            <h2>Your Feed</h2>
+            <div class="feed-container"></div>
+        </div>
+        
+
+        <!-- Friends Section -->
+        <div id="friendsSection" class="section" style="display: none;">
+            <h2>Your Friends</h2>
+            <div class="friends-container">
+                <div class="current-friends">
+                    <h3>Current Friends</h3>
+                    <ul>
+                        <li></li>
+                    </ul>
+                </div>
+                <div class="friend-requests">
+                    <div class="sent-requests">
+                        <h3>Sent Requests</h3>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </div>
+                    <div class="received-requests">
+                        <h3>Received Requests</h3>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Section -->
+        <div id="registrationSection" class="section userLogSection" style="display: none;">
+            <h2>Register</h2>
+            <form id="registerForm" action="/M00982229/users" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" name="password" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="section userLogSection" style="display: none;">
+            <h2>Login</h2>
+            <form id="loginForm" action="/M00982229/login" method="POST">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profileSection" class="section" style="display: none;">
+            <h2>Your Profile</h2>
+            <div class="profile-container">
+                <div class="profile-info">
+                    <img src="/M00982229/Images/profile-default.png" alt="Profile Picture" class="profile-pic">
+                    <h3>Name</h3>
+                    <h2>Username</h2>
+                    <p class="profile-bio"></p>
+                    <div class="profile-stats">
+                        <p>Posts: <span>0</span></p>
+                        <p>Followers: <span>0</span></p>
+                        <p>Following: <span>0</span></p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="profile-btn" onclick="toggleEditProfileModal()">Edit Profile</button>
+                    <button id="logoutButton" class="profile-btn" onclick="logoutUser()">Logout</button>
+                </div>
+            </div>
+        </div>        
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Book Sphere. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+<!-- Create Post Modal -->
+<div id="createPostModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="toggleCreatePostModal()">&times;</span>
+        <h2>Create a New Post</h2>
+        <form id="createPostForm" onsubmit="createPost(event)">
+            <div class="form-group">
+                <label for="postText">What's on your mind?</label>
+                <textarea id="postText" name="postText" rows="5" placeholder="Write something..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="postImage">Upload an image?</label>
+                <input type="file" id="postImage" name="postImage" accept="image/*">
+            </div>
+            <button type="submit" class="submit-post-btn">Post</button>
+        </form>
+    </div>
+</div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleEditProfileModal()">&times;</span>
+            <h2>Edit Profile</h2>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="editName">Name:</label>
+                    <input type="text" id="editName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="editUsername">Username:</label>
+                    <input type="text" id="editUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="editBio">Bio:</label>
+                    <textarea id="editBio" name="bio" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="profileImage">Upload a profile picture:</label>
+                    <input type="file" id="profileImage" name="postImage" accept="image/*">
+                </div>
+                <button type="submit" class="submit-edit-btn">Save Changes</button>
+            </form>                      
+        </div>
+    </div>  
+</body>
+</html>
